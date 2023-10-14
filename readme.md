@@ -59,15 +59,13 @@ Dalam bagian ini akan dijelaksan mengenai analisis univariate dan multivariate, 
 | ![](/assets/images/film_pertahun.png) <center><b>Gambar 1</b> - Jumlah Film yang Rilis Setiap Tahun</center> | ![](/assets/images/rating_pertahun.png) <center><b>Gambar 2</b> - Jumlah Rating yang Diberikan Setiap Tahun</center>  |
 |---|---|
 
-**Kesimpulan:**<br>
-Perilisan film paling banyak terjadi pada tahun 2002, sedangkan jumlah pemberian rating paling banyak terjadi pada tahun 2000.
+Berdasarkan Gambar 1 dan Gambar 2, Perilisan film paling banyak terjadi pada tahun 2002, sedangkan jumlah pemberian rating paling banyak terjadi pada tahun 2000.
 
 #### Multivariate Analysis
 | ![](/assets/images/film_rating_terbanyak.png) <center><b>Gambar 3</b> - 10 Film dengan Jumlah Rating Paling Banyak</center> | ![](/assets/images/distribusi_rating.png) <center><b>Gambar 4</b> - Distribusi Rating pada Semua Film</center>  |
 |---|---|
 
-**Kesimpulan:**<br>
-Film Forest Gump (1994) memilki jumlah rating paling banyak, sedangkan distribusi rating paling banyak terdapat pada nilai rating 4. 
+Berdasarkan Gambar 3 dan Gambar 4, Film Forest Gump (1994) memilki jumlah rating paling banyak, sedangkan distribusi rating paling banyak terdapat pada nilai rating 4. 
 
 ## Data Preparation
 Pada tahap Data *Preparation* dibagi menjadi 2 tahapan, yaitu:
@@ -131,7 +129,6 @@ Menghitung cosine similarity dataframe tfidf_matrix yang diperoleh pada tahapan 
   | 3 |                         Shrek the Third (2007) | Adventure\|Animation\|Children\|Comedy\|Fantasy |
   | 4 | Adventures of Rocky and Bullwinkle, The (2000) | Adventure\|Animation\|Children\|Comedy\|Fantasy |
 
-  **Kesimpulan:**<br>
   Berdasarkan hasil diatas, dapat dilihat bahwa terdapat top 5 film yang memiliki kesamaan dengan Toy Story (1995). Hal tersebut didasarkan pada nilai *Cosine Similarity* pada film Toy Story (1995) dengan film lainnya dan didapatkanlah Top 5 film yang memiliki tingkat kesaman paling tinggi.<br><br>
 
 - **Collaborative Filtering**<br>Kelebihan dari pendekantan *User Based Collaborative Filtering* adalah dapat menghasilkan rekomendasi yang berkualitas baik. Sedangkan kekurangannya adalah kompleksitas perhitungan akan semakin bertambah seiring dengan bertambahnya *User* sistem, semakin banyak *User* yang menggunakan system maka proses perekomendasian akan semakin lama [^3].<br>
@@ -150,7 +147,6 @@ Menghitung cosine similarity dataframe tfidf_matrix yang diperoleh pada tahapan 
   |-----------------------------------------------------------------------|
   | ===========================<br>Movie with high ratings from user<br>--------------------------------<br>American History X (1998) : Crime\|Drama<br>Eternal Sunshine of the Spotless Mind (2004) : Drama\|Romance\|Sci-Fi<br>Shaun of the Dead (2004) : Comedy\|Horror<br>Reign Over Me (2007) : Drama<br>Hangover, The (2009) : Comedy\|Crime<br>--------------------------------<br>Top 10 movie recommendation<br>--------------------------------<br>Underground (1995) : Comedy\|Drama\|War<br>Streetcar Named Desire, A (1951) : Drama<br>Cinema Paradiso (Nuovo cinema Paradiso) (1989) : Drama<br>Paths of Glory (1957) : Drama\|War<br>Touch of Evil (1958) : Crime\|Film-Noir\|Thriller<br>Night on Earth (1991) : Comedy\|Drama<br>Double Indemnity (1944) : Crime\|Drama\|Film-Noir<br>Trial, The (Procès, Le) (1962) : Drama<br>Day of the Doctor, The (2013) : Adventure\|Drama\|Sci-Fi<br>Three Billboards Outside Ebbing, Missouri (2017) : Crime\|Drama |
 
-  **Kesimpulan:**<br>
   Berdasarkan hasil diatas yang menampilkan rekomendasi untuk user 307. Hasil tersebut diperoleh dari hasil personalisasi user 307 saat memberikan rating tinggi pada film.
 
 
@@ -173,7 +169,6 @@ $$Precision = \frac{our recommendarion that are relevan}{items we recommended}$$
   | 3 |                         Shrek the Third (2007) | Adventure\|Animation\|Children\|Comedy\|Fantasy |
   | 4 | Adventures of Rocky and Bullwinkle, The (2000) | Adventure\|Animation\|Children\|Comedy\|Fantasy |
 
-  **Kesimpulan:**<br>
   Dari hasil rekomendasi di atas, diketahui bahwa Toy Story (1995) termasuk ke dalam genre Adventure\|Animation\|Children\|Comedy\|Fantasy. Dari 5 item yang direkomendasikan, semua item memiliki genre Adventure\|Animation\|Children\|Comedy\|Fantasy (similar).<br>**Artinya, precision sistem pada film Toy Story (1995) sebesar 5/5 atau 100%.**
 
 ### Collaborative Filtering
@@ -191,8 +186,10 @@ Di sini, y_true adalah nilai aktual, y_pred adalah nilai yang diprediksi oleh mo
 Hasil:<br>
 ![](/assets/images/rmse.png) <center><b>Gambar 5</b> - Evaluasi RMSE</center>
 
-**Kesimpulan:**<br>
 Berdasarkan gambar 5, nilai RMSE pada model dengan 25 epochs kian menurun. Hal tersebut menandakan bahwa model memiliki akurasi yang semakin baik. Selain itu, grafik yang pada awalnya mengalami penurunan kemudian dilanjutkan dengan menunjukkan kestabilan menandakan model sudah menunjukkan hasil goodfit.
+
+## Conclusion
+Dengan menggunakan machine learning dengan metode Content Based Filtering dan Collaborative Filtering, kita dapat menyelesaikan permasalahan mengenai sistem rekomendasi film. Hal tersebut dapat kita lihat pada evaluasi content based filtering yang menunjukkan nilai presisi 100% pada film Toy Story (1995) dan pada evaluasi collaborative filtering yang menunjukkan nilai RMSE semakin menurun dan stabil pada nilai dibawah 0.19 (train) dan dibawah 0.21 (test) yang menunjukkan hasil goodfit.
 
 ## Daftar Referensi
 
