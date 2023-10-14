@@ -84,13 +84,38 @@ Pada tahap Data *Preparation* dibagi menjadi 2 tahapan, yaitu:
 ### Data Preparation untuk Collaborative Filtering
 - Melakukan *Encoding*<br>Agar data dapat dimasukkan ke dalam *integer*.
 - Memetakan data kedalam Dataframe
-- Membagi data le data, data training dan validasi
+- Membagi data ke dalam data training dan validasi dengan rasio 80:20
 
 
 ## Modeling
 Menggunakan 2 metode algoritma machine learning untuk sistem rekomendasi film, yaitu:
-- Content-Based Filtering<br>Metode *Content-Based Filtering* dengan *Cosine Similarity* digunakan untuk menyediakan rekomendasi film berdasarkan kesamaan karakteristik [^2].<br>
-Hasil:
+- **Content-Based Filtering**<br>Metode *Content-Based Filtering* dengan *Cosine Similarity* digunakan untuk menyediakan rekomendasi film berdasarkan kesamaan karakteristik [^2].<br>
+**Tahap TF-IDF Vectorizer**<br>
+Pada dataframe film, dilakukan pembobotan dengan TF-IDF Vectorizer untuk menemukan representasi fitur penting dari setiap genre film.<br>
+Untuk menghasilkan vektor tf-idf dalam bentuk matriks, gunakan fungsi todense() dalam library scipy.<br>
+Semakin tinggi nilai pada matriks, maka semakin cocok judul film dengan genre tersebut.<br>
+**Tahap Cosine Similarity**<br>
+Menghitung cosine similarity dataframe tfidf_matrix yang diperoleh pada tahapan sebelumnya menggunakan fungsi cosine_similarity dari library sklearn.
+
+  |                            movie_name | Mirror Mirror (2012) | Message in a Bottle (1999) | Howards End (1992) | Masquerade (1988) | Meatballs Part II (1984) |
+  |--------------------------------------:|---------------------:|---------------------------:|-------------------:|------------------:|-------------------------:|
+  | Wizards of the Lost Kingdom II (1989) |             0.556470 |                   0.000000 |           0.000000 |          0.000000 |                 0.000000 |
+  |                           DiG! (2004) |             0.000000 |                   0.000000 |           0.000000 |          0.000000 |                 0.000000 |
+  |                        Airport (1970) |             0.000000 |                   0.000000 |           1.000000 |          0.000000 |                 0.000000 |
+  |                   Mystic Pizza (1988) |             0.195131 |                   0.726418 |           0.466539 |          0.375645 |                 0.504636 |
+  | Dragonheart 2: A New Beginning (2000) |             0.771308 |                   0.000000 |           0.275732 |          0.195724 |                 0.298247 |
+  
+  **Semakin tinggi nilai *cosine similarity*, maka semakin mirip karakteristik film tersebut.**<br>
+
+  **Membuat Fungsi movie_recommendations**
+  membuat fungsi movie_recommendations dengan beberapa parameter sebagai berikut:
+  - movie_name : Nama judul dari movie tersebut (index kemiripan dataframe).
+  - similarity_data : Dataframe mengenai similarity yang telah kita didefinisikan sebelumnya
+  - items : Nama dan fitur yang digunakan untuk mendefinisikan kemiripan, dalam hal ini adalah ‘movie_name’ dan ‘genre’.
+  - k : Banyak rekomendasi yang ingin diberikan.<br>
+<br>
+
+  **Hasil Content-Based Filtering:**
 
   Detail genre movie:
   |   | id | movie_name       | genre                                           |
@@ -107,17 +132,26 @@ Hasil:
   | 4 | Adventures of Rocky and Bullwinkle, The (2000) | Adventure\|Animation\|Children\|Comedy\|Fantasy |
 
   **Kesimpulan:**<br>
-  Berdasarkan hasil diatas, dapat dilihat bahwa terdapat top 5 film yang memiliki kesamaan dengan Toy Story (1995). Hal tersebut didasarkan pada nilai *Cosine Similarity* pada film Toy Story (1995) dengan film lainnya dan didapatkanlah Top 5 film yang memiliki tingkat kesaman paling tinggi.
+  Berdasarkan hasil diatas, dapat dilihat bahwa terdapat top 5 film yang memiliki kesamaan dengan Toy Story (1995). Hal tersebut didasarkan pada nilai *Cosine Similarity* pada film Toy Story (1995) dengan film lainnya dan didapatkanlah Top 5 film yang memiliki tingkat kesaman paling tinggi.<br><br>
 
-- Collaborative Filtering<br>Kelebihan dari pendekantan *User Based Collaborative Filtering* adalah dapat menghasilkan rekomendasi yang berkualitas baik. Sedangkan kekurangannya adalah kompleksitas perhitungan akan semakin bertambah seiring dengan bertambahnya *User* sistem, semakin banyak *User* yang menggunakan system maka proses perekomendasian akan semakin lama [^3]<br>
-Hasil:
+- **Collaborative Filtering**<br>Kelebihan dari pendekantan *User Based Collaborative Filtering* adalah dapat menghasilkan rekomendasi yang berkualitas baik. Sedangkan kekurangannya adalah kompleksitas perhitungan akan semakin bertambah seiring dengan bertambahnya *User* sistem, semakin banyak *User* yang menggunakan system maka proses perekomendasian akan semakin lama [^3].<br>
+  **Membuat Kelas RecommenderNet**<br>
+  membuat kelas RecommenderNet dengan beberapa parameter sebagai berikut:
+  - tf.keras.Model : mengambil Model dari library TensorFlow Keras.
+  - num_users : jumlah user dari data user yang sudah di encoding
+  - num_movie : jumlah movie dari data user yang sudah di encoding
+  - embedding_size : ukuran layer embedding.<br>
+  **Compile Model**<br>
+  Dalam mengcompline model ini menggunakan Binary Crossentropy untuk menghitung loss function, Adam (Adaptive Moment Estimation) sebagai optimizer dengan learning_rate sebesar 0.001, dan root mean squared error (RMSE) sebagai metrics evaluation. 
+  
+  **Hasil Collaborative Filtering:**
 
   | Showing recommendations for users: 307                                |
   |-----------------------------------------------------------------------|
   | ===========================<br>Movie with high ratings from user<br>--------------------------------<br>American History X (1998) : Crime\|Drama<br>Eternal Sunshine of the Spotless Mind (2004) : Drama\|Romance\|Sci-Fi<br>Shaun of the Dead (2004) : Comedy\|Horror<br>Reign Over Me (2007) : Drama<br>Hangover, The (2009) : Comedy\|Crime<br>--------------------------------<br>Top 10 movie recommendation<br>--------------------------------<br>Underground (1995) : Comedy\|Drama\|War<br>Streetcar Named Desire, A (1951) : Drama<br>Cinema Paradiso (Nuovo cinema Paradiso) (1989) : Drama<br>Paths of Glory (1957) : Drama\|War<br>Touch of Evil (1958) : Crime\|Film-Noir\|Thriller<br>Night on Earth (1991) : Comedy\|Drama<br>Double Indemnity (1944) : Crime\|Drama\|Film-Noir<br>Trial, The (Procès, Le) (1962) : Drama<br>Day of the Doctor, The (2013) : Adventure\|Drama\|Sci-Fi<br>Three Billboards Outside Ebbing, Missouri (2017) : Crime\|Drama |
 
-**Kesimpulan:**<br>
-Berdasarkan hasil diatas yang menampilkan rekomendasi untuk user 307. Hasil tersebut diperoleh dari hasil personalisasi user 307 saat memberikan rating tinggi pada film.
+  **Kesimpulan:**<br>
+  Berdasarkan hasil diatas yang menampilkan rekomendasi untuk user 307. Hasil tersebut diperoleh dari hasil personalisasi user 307 saat memberikan rating tinggi pada film.
 
 
 ## Evaluation
@@ -140,7 +174,7 @@ $$Precision = \frac{our recommendarion that are relevan}{items we recommended}$$
   | 4 | Adventures of Rocky and Bullwinkle, The (2000) | Adventure\|Animation\|Children\|Comedy\|Fantasy |
 
   **Kesimpulan:**<br>
-  Dari hasil rekomendasi di atas, diketahui bahwa Toy Story (1995) termasuk ke dalam genre Adventure\|Animation\|Children\|Comedy\|Fantasy. Dari 5 item yang direkomendasikan, semua item memiliki genre Adventure\|Animation\|Children\|Comedy\|Fantasy (similar).<br>**Artinya, precision sistem kita pada film Toy Story (1995) sebesar 5/5 atau 100%.**
+  Dari hasil rekomendasi di atas, diketahui bahwa Toy Story (1995) termasuk ke dalam genre Adventure\|Animation\|Children\|Comedy\|Fantasy. Dari 5 item yang direkomendasikan, semua item memiliki genre Adventure\|Animation\|Children\|Comedy\|Fantasy (similar).<br>**Artinya, precision sistem pada film Toy Story (1995) sebesar 5/5 atau 100%.**
 
 ### Collaborative Filtering
 Evaluasi metrik yang digunakan untuk mengukur kinerja model adalah metrik RMSE (Root Mean Squared Error). RMSE adalah akar kuadrat dari rata-rata dari kuadrat selisih antara prediksi model (y_pred) dan nilai aktual (y_true). Rumus RMSE adalah sebagai berikut:
@@ -158,7 +192,7 @@ Hasil:<br>
 ![](/assets/images/rmse.png) <center><b>Gambar 5</b> - Evaluasi RMSE</center>
 
 **Kesimpulan:**<br>
-Berdasarkan gambar 5, nilai RMSE pada model dengan 25 epochs kian menurun. Hal tersebut menandakan bahwa model memiliki akurasi yang semakin baik.
+Berdasarkan gambar 5, nilai RMSE pada model dengan 25 epochs kian menurun. Hal tersebut menandakan bahwa model memiliki akurasi yang semakin baik. Selain itu, grafik yang pada awalnya mengalami penurunan kemudian dilanjutkan dengan menunjukkan kestabilan menandakan model sudah menunjukkan hasil goodfit.
 
 ## Daftar Referensi
 
