@@ -183,13 +183,19 @@ Di sini, y_true adalah nilai aktual, y_pred adalah nilai yang diprediksi oleh mo
 - Sensitif terhadap Outliers: RMSE sensitif terhadap data outlier. Outliers yang ekstrim dapat memiliki pengaruh yang signifikan pada hasil RMSE.
 - Satuan yang Sama: RMSE menyajikan kesalahan dalam satuan yang sama dengan variabel target, yang bisa sulit untuk diinterpretasikan dalam beberapa kasus.
 
-Hasil:<br>
+
+**Evaluasi RMSE:**<br>
+5 Epoch Terakhir
+|Epoch 21/25<br>2521/2521 [==============================] - 7s 3ms/step - loss: 0.5966 - root_mean_squared_error: 0.1873 - val_loss: 0.6101 - val_root_mean_squared_error: 0.2015<br>Epoch 22/25<br>2521/2521 [==============================] - 6s 3ms/step - loss: 0.5969 - root_mean_squared_error: 0.1876 - val_loss: 0.6109 - val_root_mean_squared_error: 0.2025<br>Epoch 23/25<br>2521/2521 [==============================] - 7s 3ms/step - loss: 0.5962 - root_mean_squared_error: 0.1867 - val_loss: 0.6102 - val_root_mean_squared_error: 0.2016<br>Epoch 24/25<br>2521/2521 [==============================] - 7s 3ms/step - loss: 0.5965 - root_mean_squared_error: 0.1871 - val_loss: 0.6106 - val_root_mean_squared_error: 0.2018<br>Epoch 25/25<br>2521/2521 [==============================] - 8s 3ms/step - loss: 0.5962 - root_mean_squared_error: 0.1865 - val_loss: 0.6104 - val_root_mean_squared_error: 0.2018|
+|---|
+
+Metrik RMSE
 ![](/assets/images/rmse.png) <center><b>Gambar 5</b> - Evaluasi RMSE</center>
 
-Berdasarkan gambar 5, nilai RMSE pada model dengan 25 epochs kian menurun. Hal tersebut menandakan bahwa model memiliki akurasi yang semakin baik. Selain itu, grafik yang pada awalnya mengalami penurunan kemudian dilanjutkan dengan menunjukkan kestabilan menandakan model sudah menunjukkan hasil goodfit.
+Berdasarkan gambar 5, nilai RMSE pada model dengan 25 epochs kian menurun. Hal tersebut menandakan bahwa model memiliki akurasi yang semakin baik. Namun, dilihat dari jarak nilai antara train dengan test dan nilai loss dengan val_loss pada 5 epoch terakhir, model tersebut masih mengalami Underfit.
 
 ## Conclusion
-Dengan menggunakan machine learning dengan metode Content Based Filtering dan Collaborative Filtering, kita dapat menyelesaikan permasalahan mengenai sistem rekomendasi film. Hal tersebut dapat kita lihat pada evaluasi content based filtering yang menunjukkan nilai presisi 100% pada film Toy Story (1995) dan pada evaluasi collaborative filtering yang menunjukkan nilai RMSE semakin menurun dan stabil pada nilai dibawah 0.19 (train) dan dibawah 0.21 (test) yang menunjukkan hasil goodfit.
+Dengan menggunakan machine learning dengan metode Content Based Filtering dan *Collaborative Filtering*, kita dapat menyelesaikan permasalahan mengenai sistem rekomendasi film. Hal tersebut dapat kita lihat pada evaluasi content based filtering yang menunjukkan nilai presisi 100% pada film Toy Story (1995) dan pada evaluasi *collaborative filtering* yang menunjukkan nilai RMSE semakin menurun dan stabil pada nilai dibawah 0.19 (train) dan dibawah 0.21 (test).<br>Namun, dilihat dari jarak nilai antara train dengan test dan nilai loss dengan val_loss pada 5 epoch terakhir, model tersebut masih mengalami Underfit. Untuk mengatasi underfit kita bisa melakukan pergantian metode machine learning atau menambahkan layer pada *collaborative filtering* atau mengganti dataset dengan dataset yang lebih baik. Mengingat pada grafik matrik rmse sudah menunjukkan kestabilan, jadi jika kita menambah lebih banyak epoch hal tersebut akan sia-sia.
 
 ## Daftar Referensi
 
